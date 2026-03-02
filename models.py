@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
 
@@ -11,7 +11,7 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
     role = db.Column(db.String(10), nullable=False)  # 'owner' or 'vet'
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     pets = db.relationship('Pet', back_populates='owner', lazy=True)
     consultations_as_vet = db.relationship(
@@ -44,7 +44,7 @@ class Pet(db.Model):
     age = db.Column(db.Integer)
     weight = db.Column(db.Float)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     owner = db.relationship('User', back_populates='pets')
     consultations = db.relationship('Consultation', back_populates='pet', lazy=True)
@@ -62,10 +62,10 @@ class Consultation(db.Model):
     status = db.Column(db.String(20), default='pendiente')  # 'pendiente' or 'atendida'
     pet_id = db.Column(db.Integer, db.ForeignKey('pets.id'), nullable=False)
     vet_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     pet = db.relationship('Pet', back_populates='consultations')
-    vet = db.relationship('User', foreign_keys=[vet_id])
+    vet = db.relationship('User', foreign_keys=[vet_id], overlaps='consultations_as_vet')
     medical_record = db.relationship(
         'MedicalRecord', back_populates='consultation', uselist=False, lazy=True
     )
@@ -84,8 +84,8 @@ class MedicalRecord(db.Model):
     consultation_id = db.Column(
         db.Integer, db.ForeignKey('consultations.id'), unique=True, nullable=False
     )
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
     consultation = db.relationship('Consultation', back_populates='medical_record')
 
