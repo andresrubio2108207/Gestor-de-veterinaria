@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}PetCare - Consulta #{{ consultation.id }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-clipboard2-pulse-fill me-2 text-primary"></i>Consulta #{{ consultation.id }}</h2>
+    <div class="d-flex gap-2">
+        {% if consultation.status == 'pendiente' %}
+        <a href="{{ url_for('main.add_medical_record', consultation_id=consultation.id) }}"
+           class="btn btn-success">
+            <i class="bi bi-pencil-square me-1"></i>Añadir Registro Médico
+        </a>
+        {% else %}
+        <a href="{{ url_for('main.add_medical_record', consultation_id=consultation.id) }}"
+           class="btn btn-outline-primary">
+            <i class="bi bi-pencil me-1"></i>Editar Registro
+        </a>
+        {% endif %}
+        <a href="{{ url_for('main.vet_dashboard') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>Volver
+        </a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-primary text-white">
+                <i class="bi bi-info-circle me-2"></i>Datos de la Consulta
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Mascota:</strong> {{ consultation.pet.name }} ({{ consultation.pet.species }})</li>
+                <li class="list-group-item"><strong>Dueño:</strong> {{ consultation.pet.owner.username }}</li>
+                <li class="list-group-item"><strong>Fecha:</strong> {{ consultation.date.strftime('%d/%m/%Y') }}</li>
+                <li class="list-group-item"><strong>Motivo:</strong> {{ consultation.reason }}</li>
+                <li class="list-group-item">
+                    <strong>Estado:</strong>
+                    {% if consultation.status == 'pendiente' %}
+                        <span class="badge bg-warning text-dark">Pendiente</span>
+                    {% else %}
+                        <span class="badge bg-success">Atendida</span>
+                    {% endif %}
+                </li>
+                <li class="list-group-item"><strong>Veterinario:</strong> {{ consultation.vet.username if consultation.vet else '—' }}</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-success text-white">
+                <i class="bi bi-file-medical me-2"></i>Registro Médico
+            </div>
+            {% if consultation.medical_record %}
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Diagnóstico:</strong><br>{{ consultation.medical_record.diagnosis or '—' }}</li>
+                <li class="list-group-item"><strong>Tratamiento:</strong><br>{{ consultation.medical_record.treatment or '—' }}</li>
+                <li class="list-group-item"><strong>Observaciones:</strong><br>{{ consultation.medical_record.observations or '—' }}</li>
+                <li class="list-group-item text-muted">
+                    <small>Creado: {{ consultation.medical_record.created_at.strftime('%d/%m/%Y %H:%M') }}</small>
+                </li>
+            </ul>
+            {% else %}
+            <div class="card-body text-muted">
+                <p>No hay registro médico para esta consulta todavía.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

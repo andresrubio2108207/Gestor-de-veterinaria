@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}PetCare - Mi Panel{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-house-heart-fill me-2 text-primary"></i>Mi Panel</h2>
+    <a href="{{ url_for('main.add_pet') }}" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i>Añadir Mascota
+    </a>
+</div>
+
+<!-- Pets section -->
+<h4 class="mb-3"><i class="bi bi-paw-fill me-2"></i>Mis Mascotas</h4>
+{% if user.pets %}
+    <div class="row g-3 mb-5">
+        {% for pet in user.pets %}
+        <div class="col-sm-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ pet.name }}</h5>
+                    <p class="card-text text-muted mb-1">
+                        <i class="bi bi-tag me-1"></i>{{ pet.species }}
+                        {% if pet.breed %} · {{ pet.breed }}{% endif %}
+                    </p>
+                    {% if pet.age %}<p class="card-text text-muted mb-1"><i class="bi bi-calendar me-1"></i>{{ pet.age }} año(s)</p>{% endif %}
+                    {% if pet.weight %}<p class="card-text text-muted mb-1"><i class="bi bi-speedometer me-1"></i>{{ pet.weight }} kg</p>{% endif %}
+                </div>
+                <div class="card-footer d-flex gap-2">
+                    <a href="{{ url_for('main.pet_detail', pet_id=pet.id) }}" class="btn btn-sm btn-outline-primary flex-fill">
+                        <i class="bi bi-eye me-1"></i>Ver
+                    </a>
+                    <a href="{{ url_for('main.request_consultation', pet_id=pet.id) }}" class="btn btn-sm btn-outline-success flex-fill">
+                        <i class="bi bi-calendar-plus me-1"></i>Consulta
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        No tienes mascotas registradas aún. <a href="{{ url_for('main.add_pet') }}">Añade una</a>.
+    </div>
+{% endif %}
+
+<!-- Pending consultations -->
+<h4 class="mb-3"><i class="bi bi-clock-history me-2"></i>Consultas Pendientes</h4>
+{% if pending %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Mascota</th>
+                    <th>Fecha</th>
+                    <th>Motivo</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in pending %}
+                <tr>
+                    <td>{{ c.pet.name }}</td>
+                    <td>{{ c.date.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ c.reason }}</td>
+                    <td><span class="badge bg-warning text-dark">Pendiente</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p class="text-muted">No hay consultas pendientes.</p>
+{% endif %}
+{% endblock %}
