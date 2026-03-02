@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}PetCare - {{ pet.name }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-paw-fill me-2 text-primary"></i>{{ pet.name }}</h2>
+    <div class="d-flex gap-2">
+        <a href="{{ url_for('main.request_consultation', pet_id=pet.id) }}" class="btn btn-success">
+            <i class="bi bi-calendar-plus me-1"></i>Solicitar Consulta
+        </a>
+        <a href="{{ url_for('main.owner_dashboard') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>Volver
+        </a>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <i class="bi bi-info-circle me-2"></i>Información
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Especie:</strong> {{ pet.species }}</li>
+                <li class="list-group-item"><strong>Raza:</strong> {{ pet.breed or '—' }}</li>
+                <li class="list-group-item"><strong>Edad:</strong> {{ pet.age ~ ' año(s)' if pet.age else '—' }}</li>
+                <li class="list-group-item"><strong>Peso:</strong> {{ pet.weight ~ ' kg' if pet.weight else '—' }}</li>
+                <li class="list-group-item"><strong>Registrado:</strong> {{ pet.created_at.strftime('%d/%m/%Y') }}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<h4 class="mb-3"><i class="bi bi-clipboard2-pulse me-2"></i>Historial de Consultas</h4>
+{% if pet.consultations %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Fecha</th>
+                    <th>Motivo</th>
+                    <th>Estado</th>
+                    <th>Veterinario</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in pet.consultations | sort(attribute='date', reverse=True) %}
+                <tr>
+                    <td>{{ c.id }}</td>
+                    <td>{{ c.date.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ c.reason }}</td>
+                    <td>
+                        {% if c.status == 'pendiente' %}
+                            <span class="badge bg-warning text-dark">Pendiente</span>
+                        {% else %}
+                            <span class="badge bg-success">Atendida</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ c.vet.username if c.vet else '—' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p class="text-muted">Esta mascota no tiene consultas registradas.</p>
+{% endif %}
+{% endblock %}

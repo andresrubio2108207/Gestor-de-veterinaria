@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}PetCare - Iniciar Sesión{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow-sm mt-4">
+            <div class="card-body p-4">
+                <h3 class="card-title mb-4 text-center">
+                    <i class="bi bi-box-arrow-in-right me-2 text-primary"></i>Iniciar Sesión
+                </h3>
+                <form method="POST" action="{{ url_for('main.login') }}" novalidate>
+                    <div class="mb-3">
+                        <label for="username" class="form-label fw-semibold">Usuario</label>
+                        <input type="text" class="form-control" id="username" name="username"
+                               placeholder="Tu nombre de usuario" required autofocus>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label fw-semibold">Contraseña</label>
+                        <input type="password" class="form-control" id="password" name="password"
+                               placeholder="Tu contraseña" required>
+                    </div>
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Entrar
+                        </button>
+                    </div>
+                </form>
+                <hr>
+                <p class="text-center mb-0">
+                    ¿No tienes cuenta?
+                    <a href="{{ url_for('main.register') }}">Regístrate aquí</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

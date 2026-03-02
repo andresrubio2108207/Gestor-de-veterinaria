@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}PetCare - Solicitar Consulta{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h3 class="card-title mb-1">
+                    <i class="bi bi-calendar-plus-fill me-2 text-primary"></i>Solicitar Consulta
+                </h3>
+                <p class="text-muted mb-4">Para <strong>{{ pet.name }}</strong></p>
+                <form method="POST"
+                      action="{{ url_for('main.request_consultation', pet_id=pet.id) }}"
+                      novalidate>
+                    <div class="mb-3">
+                        <label for="date" class="form-label fw-semibold">Fecha preferida <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="date" name="date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reason" class="form-label fw-semibold">Motivo de la consulta <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="reason" name="reason" rows="4"
+                                  placeholder="Describe el motivo de la visita..." required></textarea>
+                    </div>
+                    <div class="d-flex gap-2 mt-3">
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-send me-1"></i>Solicitar
+                        </button>
+                        <a href="{{ url_for('main.pet_detail', pet_id=pet.id) }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

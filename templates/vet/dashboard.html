@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}PetCare - Panel Veterinario{% endblock %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-hospital-fill me-2 text-primary"></i>Panel del Veterinario</h2>
+
+<!-- Pending consultations -->
+<h4 class="mb-3">
+    <i class="bi bi-clock-history me-2 text-warning"></i>Consultas Pendientes
+    <span class="badge bg-warning text-dark ms-2">{{ pending | length }}</span>
+</h4>
+{% if pending %}
+    <div class="table-responsive mb-5">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Mascota</th>
+                    <th>Dueño</th>
+                    <th>Fecha</th>
+                    <th>Motivo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in pending %}
+                <tr>
+                    <td>{{ c.id }}</td>
+                    <td>{{ c.pet.name }} <small class="text-muted">({{ c.pet.species }})</small></td>
+                    <td>{{ c.pet.owner.username }}</td>
+                    <td>{{ c.date.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ c.reason }}</td>
+                    <td>
+                        <a href="{{ url_for('main.consultation_detail', consultation_id=c.id) }}"
+                           class="btn btn-sm btn-outline-primary me-1">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a href="{{ url_for('main.add_medical_record', consultation_id=c.id) }}"
+                           class="btn btn-sm btn-success">
+                            <i class="bi bi-pencil-square me-1"></i>Atender
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p class="text-muted mb-5">No hay consultas pendientes.</p>
+{% endif %}
+
+<!-- Attended consultations -->
+<h4 class="mb-3">
+    <i class="bi bi-check-circle-fill me-2 text-success"></i>Consultas Atendidas
+    <span class="badge bg-success ms-2">{{ attended | length }}</span>
+</h4>
+{% if attended %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Mascota</th>
+                    <th>Dueño</th>
+                    <th>Fecha</th>
+                    <th>Veterinario</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in attended %}
+                <tr>
+                    <td>{{ c.id }}</td>
+                    <td>{{ c.pet.name }}</td>
+                    <td>{{ c.pet.owner.username }}</td>
+                    <td>{{ c.date.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ c.vet.username if c.vet else '—' }}</td>
+                    <td>
+                        <a href="{{ url_for('main.consultation_detail', consultation_id=c.id) }}"
+                           class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-eye me-1"></i>Ver
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p class="text-muted">No hay consultas atendidas aún.</p>
+{% endif %}
+{% endblock %}
