@@ -1,7 +1,7 @@
 from functools import wraps
 from datetime import datetime
 from flask import Blueprint, render_template, redirect, url_for, flash, session, request
-from app import db
+from extensions import db
 from models import User, Pet, Consultation, MedicalRecord
 
 main = Blueprint('main', __name__)
