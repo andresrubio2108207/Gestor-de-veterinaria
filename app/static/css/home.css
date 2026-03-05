@@ -1,0 +1,227 @@
+/* RESET BÁSICO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+    max-height: 100%;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: #faeef1;
+    color: #222;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* HEADER */
+.header {
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 0;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.logo span {
+    color: #ff4d6d;
+}
+
+.nav a {
+    margin-left: 25px;
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.nav a:hover {
+    color: #000;
+}
+
+.nav span {
+    margin-left: 20px;
+    font-weight: 600;
+    color: #333; /* nombre usuario */
+}
+
+.nav .btn-login {
+    background-color: #ff4d6d;
+    color: white !important;
+    padding: 8px 18px;
+    border-radius: 20px;
+    margin-left: 15px; /* separa del nombre si hay sesión */
+}
+
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 90vh;
+    padding: 0;
+}
+
+.hero-content {
+    width: 50%;
+    padding: 80px 5%;
+}
+
+.hero-content h1 {
+    font-size: 42px;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+
+.hero-content strong {
+    font-weight: 600;
+}
+
+.hero-content p {
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 18px;
+}
+
+.hero-buttons a {
+    text-decoration: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    margin-right: 15px;
+    display: inline-block;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.hero-image {
+    width: 50%;
+    height: 92vh;
+    background-image: url("https://static.wixstatic.com/media/ebd955_ee0be5d237b84353bb3e8598d76828d4~mv2_d_2000_1499_s_2.jpg/v1/fill/w_953,h_700,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/ebd955_ee0be5d237b84353bb3e8598d76828d4~mv2_d_2000_1499_s_2.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+    }
+
+    .hero-content,
+    .hero-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .hero-image {
+        height: 400px;
+    }
+}
+
+.btn-primary {
+    background-color: #ff4d6d;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #e63e5c;
+}
+
+.btn-secondary {
+    background-color: #ffd43b;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background-color: #f2c200;
+}
+
+/* FOOTER */
+.footer {
+    background: #fff;
+    border-top: 1px solid #eee;
+    padding: 20px 0 20px 0;
+}
+
+.footer-content {
+    text-align: center;
+}
+
+.footer-contact h3 {
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 5px;
+}
+
+.social-links a {
+    font-size: 22px;
+    color: #555;
+    transition: 0.3s ease;
+}
+
+.social-links a:hover {
+    transform: translateY(-5px);
+}
+
+.social-links a:hover .fa-github {
+    color: #000;
+}
+
+.social-links a:hover .fa-whatsapp {
+    color: #25D366;
+}
+
+.social-links a:hover .fa-envelope {
+    color: #ff4d6d;
+}
+
+.copyright {
+    font-size: 14px;
+    color: #999;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav a, .nav span, .nav .btn-login {
+        margin: 10px 0 0 0;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+}

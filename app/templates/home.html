@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare</title>
+    <link rel="icon" type="image/png" href="https://images.vexels.com/media/users/3/144928/isolated/preview/ebbccaf76f41f7d83e45a42974cfcd87-ilustracion-de-perro.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="container nav-container">
+            <div class="logo">PetCare<span>.</span></div>
+            <nav class="nav">
+                <a href="{{ url_for('auth.home') }}">Inicio</a>
+                <a href="{{ url_for('auth.mascotas') }}">Mascotas</a>
+                <a href="{{ url_for('auth.consultas') }}">Consultas</a>
+                <a href="{{ url_for('auth.historial') }}">Historial</a>
+                <a href="{{ url_for('auth.veterinarios') }}">Veterinarios</a>
+                {% if session.get('user_id') %}
+                    <span>Hola, {{ session.nombre }}</span>
+                    <a href="{{ url_for('auth.logout') }}" class="btn-login">Cerrar sesión</a>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}" class="btn-login">Ingresar</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+<main class="main">
+    <section class="hero">
+        
+        <div class="hero-content">
+            <h1>
+                Bienvenid@{% if session.get('nombre') %}, {{ session.nombre }}{% endif %}<br>
+                <strong>Estamos al cuidado de tu mascota</strong>
+            </h1>
+
+            <p>
+                ¿Cómo te podemos ayudar?
+            </p>
+
+            <div class="hero-buttons">
+                   <a href="{{ url_for('mascota.ver_mascotas') }}" class="btn-primary">Registrar Mascota</a>
+                    <a href="{{ url_for('auth.consultas') }}" class="btn-secondary">Solicitar Consulta</a>
+            </div>
+        </div>
+
+        <div class="hero-image"></div>
+
+    </section>
+</main>
+</body>
+</html>

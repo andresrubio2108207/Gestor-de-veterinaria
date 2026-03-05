@@ -1,0 +1,151 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f8f9fb;
+    color: #222;
+}
+
+.main {
+    flex: 1 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.header {
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 0;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.logo span {
+    color: #ff4d6d;
+}
+
+.nav a {
+    margin-left: 25px;
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.nav a:hover {
+    color: #000;
+}
+
+.btn-login {
+    background-color: #ff4d6d;
+    color: white !important;
+    padding: 8px 18px;
+    border-radius: 20px;
+}
+
+.consulta {
+    padding: 40px 20px;
+    max-width: 800px;
+    width: 100%;
+    margin: 40px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.consulta h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #222;
+}
+
+.form-consulta {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.form-consulta label {
+    font-weight: 500;
+    color: #555;
+}
+
+.form-consulta input,
+.form-consulta select,
+.form-consulta textarea {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+.form-consulta textarea {
+    resize: vertical;
+}
+
+.form-consulta .btn-primary {
+    align-self: center;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    color: #ffffff;
+    background-color: #ff4d6d;
+    border: none;
+    transition: 0.3s ease;
+}
+
+.form-consulta .btn-primary:hover {
+    background-color: #e63e5c;
+}
+
+.footer {
+    flex-shrink: 0;
+    background: #fff;
+    border-top: 1px solid #eee;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+    color: #999;
+}

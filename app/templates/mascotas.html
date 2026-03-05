@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+<meta charset="UTF-8">
+<title>Mis Mascotas</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mascotas.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <div class="header">
+        <h1>Mis Mascotas 🐾</h1>
+
+        <a href="/registrar-mascota" class="btn-add">
+            + Nueva Mascota
+        </a>
+    </div>
+
+    <div class="cards">
+
+        {% for mascota in mascotas %}
+
+        <div class="card">
+
+            <h2>{{ mascota.nombre }}</h2>
+
+            <p><b>Especie:</b> {{ mascota.especie }}</p>
+            <p><b>Raza:</b> {{ mascota.raza }}</p>
+            <p><b>Edad:</b> {{ mascota.edad }} años</p>
+
+            <button>Ver historial</button>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 from app import db
 
-class Usuario(db.Model):
+class User(db.Model):
     __tablename__ = "usuarios"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -14,3 +14,6 @@ class Usuario(db.Model):
         "polymorphic_on": tipo,
         "polymorphic_identity": "usuario"
     }
+
+    def __repr__(self):
+        return f'<User {self.username}>'
