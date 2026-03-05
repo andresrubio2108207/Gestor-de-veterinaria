@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Mascota</title>
+    <link rel="icon" type="image/png" href="https://images.vexels.com/media/users/3/144928/isolated/preview/ebbccaf76f41f7d83e45a42974cfcd87-ilustracion-de-perro.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/registro_mascotas.css') }}">
+</head>
+<body>
+
+<header class="header">
+    <div class="container nav-container">
+        <div class="logo">PetCare<span>.</span></div>
+        <nav class="nav">
+            <a href="{{ url_for('auth.home') }}">Inicio</a>
+            <a href="{{ url_for('mascota.ver_mascotas') }}">Mis mascotas</a>
+            <a href="{{ url_for('auth.consultas') }}">Consultas</a>
+            <a href="{{ url_for('auth.servicios') }}">Servicios</a>
+            <a href="{{ url_for('auth.historial') }}">Historial</a>
+            {% if session.get('user_id') %}
+                <span>Hola, {{ session.nombre }}</span>
+                <a href="{{ url_for('auth.logout') }}" class="btn-login">Cerrar sesión</a>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}" class="btn-login">Ingresar</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+
+<main class="main">
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Registrar Mascota</h1>
+            <form method="POST" class="form-mascota" enctype="multipart/form-data">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <p class="error {{ category }}">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                <label for="nombre">Nombre</label>
+                <input type="text" name="nombre" id="nombre" placeholder="Nombre de la mascota" required>
+
+                <label for="especie">Especie</label>
+                <input type="text" name="especie" id="especie" placeholder="Ej: Perro, Gato" required>
+
+                <label for="raza">Raza</label>
+                <input type="text" name="raza" id="raza" placeholder="Ej: Bulldog">
+
+                <label for="edad">Edad</label>
+                <input type="number" name="edad" id="edad" placeholder="Edad en años" min="0" required>
+
+                <label for="historial">Historial Médico</label>
+                <textarea name="historial" id="historial" placeholder="Enfermedades previas, vacunas, etc." rows="4"></textarea>
+
+                <label for="imagen">Imagen</label>
+                <div class="img-upload">
+                    <div class="img-preview" id="imgPreview">
+                        <img id="previewImg" src="" alt="Vista previa" />
+                        <span class="preview-text" id="previewText">No se ha seleccionado imagen</span>
+                    </div>
+                    <div class="img-actions">
+                        <input type="file" name="imagen" id="imagen" accept="image/*" style="display:none;">
+                        <button type="button" class="btn-primary" id="btnSelect">Seleccionar imagen</button>
+                        <button type="button" class="btn-primary secondary" id="btnRemove" style="display:none;">Eliminar</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">Registrar Mascota</button>
+            </form>
+        </div>
+
+        <div class="hero-image" style="background-image:url('/static/img/registro-mascota.png'); width:45%; height:600px;"></div>
+    </section>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    const input = document.getElementById('imagen');
+    const btnSelect = document.getElementById('btnSelect');
+    const btnRemove = document.getElementById('btnRemove');
+    const previewImg = document.getElementById('previewImg');
+    const previewText = document.getElementById('previewText');
+
+    btnSelect.addEventListener('click', () => input.click());
+
+    input.addEventListener('change', function(){
+        const file = this.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e){
+            previewImg.src = e.target.result;
+            document.getElementById('imgPreview').classList.add('has-img');
+            btnRemove.style.display = 'inline-block';
+        }
+        reader.readAsDataURL(file);
+    });
+
+    btnRemove.addEventListener('click', function(){
+        input.value = '';
+        previewImg.src = '';
+        document.getElementById('imgPreview').classList.remove('has-img');
+        this.style.display = 'none';
+    });
+});
+</script>
+
+</body>
+</html>

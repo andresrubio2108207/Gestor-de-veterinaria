@@ -1,45 +1,57 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-<meta charset="UTF-8">
-<title>Mis Mascotas</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/mascotas.css') }}">
+    <meta charset="UTF-8">
+    <title>Mis Mascotas</title>
+    <link rel="icon" type="image/png" href="https://images.vexels.com/media/users/3/144928/isolated/preview/ebbccaf76f41f7d83e45a42974cfcd87-ilustracion-de-perro.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mascotas.css') }}">
+    <style> .empty { padding: 40px; text-align:center; }</style>
 </head>
-
 <body>
-
-<div class="dashboard">
-
-    <div class="header">
-        <h1>Mis Mascotas 🐾</h1>
-
-        <a href="/registrar-mascota" class="btn-add">
-            + Nueva Mascota
-        </a>
-    </div>
-
-    <div class="cards">
-
-        {% for mascota in mascotas %}
-
-        <div class="card">
-
-            <h2>{{ mascota.nombre }}</h2>
-
-            <p><b>Especie:</b> {{ mascota.especie }}</p>
-            <p><b>Raza:</b> {{ mascota.raza }}</p>
-            <p><b>Edad:</b> {{ mascota.edad }} años</p>
-
-            <button>Ver historial</button>
-
+    <header class="header">
+        <div class="container nav-container">
+            <div class="logo">PetCare<span>.</span></div>
+            <nav class="nav">
+                <a href="{{ url_for('auth.home') }}">Inicio</a>
+                <a href="{{ url_for('mascota.ver_mascotas') }}">Mascotas</a>
+                <a href="{{ url_for('auth.consultas') }}">Consultas</a>
+            </nav>
         </div>
+    </header>
 
-        {% endfor %}
-
-    </div>
-
-</div>
-
+    <main class="main">
+        {% if mascotas %}
+        <div class="cards-container">
+            {% for m in mascotas %}
+            <div class="card">
+                <div class="card-header">
+                    {% if m.imagen %}
+                    <div class="thumb">
+                        <img src="{{ url_for('mascota.mascota_imagen', mascota_id=m.id) }}" alt="{{ m.nombre }}">
+                    </div>
+                    {% else %}
+                    <div class="thumb placeholder"></div>
+                    {% endif %}
+                    <h2>{{ m.nombre }}</h2>
+                    <form method="POST" action="{{ url_for('mascota.eliminar_mascota', mascota_id=m.id) }}" onsubmit="return confirm('¿Eliminar mascota? Esta acción es irreversible.');">
+                        <button type="submit" class="btn-delete">Eliminar</button>
+                    </form>
+                </div>
+                {% if m.imagen %}
+                    <img src="{{ url_for('mascota.mascota_imagen', mascota_id=m.id) }}" alt="{{ m.nombre }}" class="card-image"/>
+                {% endif %}
+                <p><b>Especie:</b> {{ m.especie }}</p>
+                <p><b>Raza:</b> {{ m.raza or '-' }}</p>
+                <p><b>Edad:</b> {{ m.edad }} años</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty">
+            <p>No tienes mascotas registradas aún.</p>
+            <a href="{{ url_for('mascota.registro_mascota') }}" class="btn-primary">Registrar primera mascota</a>
+        </div>
+        {% endif %}
+    </main>
 </body>
 </html>

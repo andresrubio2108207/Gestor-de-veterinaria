@@ -14,10 +14,10 @@
             <div class="logo">PetCare<span>.</span></div>
             <nav class="nav">
                 <a href="{{ url_for('auth.home') }}">Inicio</a>
-                <a href="{{ url_for('auth.mascotas') }}">Mascotas</a>
+                <a href="{{ url_for('mascota.ver_mascotas') }}">Mis Mascotas</a>
                 <a href="{{ url_for('auth.consultas') }}">Consultas</a>
+                <a href="{{ url_for('auth.servicios') }}">Servicios</a>
                 <a href="{{ url_for('auth.historial') }}">Historial</a>
-                <a href="{{ url_for('auth.veterinarios') }}">Veterinarios</a>
                 {% if session.get('user_id') %}
                     <span>Hola, {{ session.nombre }}</span>
                     <a href="{{ url_for('auth.logout') }}" class="btn-login">Cerrar sesión</a>
@@ -41,8 +41,18 @@
                 ¿Cómo te podemos ayudar?
             </p>
 
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flashes">
+                    {% for category, message in messages %}
+                        <p class="flash {{ category }}">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% endwith %}
+
             <div class="hero-buttons">
-                   <a href="{{ url_for('mascota.ver_mascotas') }}" class="btn-primary">Registrar Mascota</a>
+                   <a href="{{ url_for('mascota.registro_mascota') }}" class="btn-primary">Registrar Mascota</a>
                     <a href="{{ url_for('auth.consultas') }}" class="btn-secondary">Solicitar Consulta</a>
             </div>
         </div>

@@ -43,7 +43,6 @@ def login():
             session["user_id"] = user.id
             session["nombre"] = user.nombre
             session["tipo"] = user.tipo
-            flash("Has iniciado sesión correctamente.")
             return redirect(url_for("auth.home"))
         flash("Correo o contraseña incorrectos.")
     return render_template("login.html")
@@ -83,11 +82,11 @@ def historial():
         return redirect(url_for("auth.login"))
     return render_template("historial.html")
 
-@auth_bp.route("/veterinarios")
-def veterinarios():
+@auth_bp.route("/servicios")
+def servicios():
     if "user_id" not in session:
         return redirect(url_for("auth.login"))
-    return render_template("veterinarios.html")
+    return render_template("servicios.html")
 
 @auth_bp.route("/logout")
 def logout():

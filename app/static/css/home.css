@@ -1,4 +1,4 @@
-/* RESET BÁSICO */
+
 * {
     margin: 0;
     padding: 0;
@@ -24,7 +24,6 @@ body {
     margin: auto;
 }
 
-/* HEADER */
 .header {
     background: #fff;
     border-bottom: 1px solid #eee;
@@ -64,7 +63,7 @@ body {
 .nav span {
     margin-left: 20px;
     font-weight: 600;
-    color: #333; /* nombre usuario */
+    color: #333; 
 }
 
 .nav .btn-login {
@@ -72,7 +71,7 @@ body {
     color: white !important;
     padding: 8px 18px;
     border-radius: 20px;
-    margin-left: 15px; /* separa del nombre si hay sesión */
+    margin-left: 15px; 
 }
 
 .hero {
@@ -156,7 +155,6 @@ body {
     background-color: #f2c200;
 }
 
-/* FOOTER */
 .footer {
     background: #fff;
     border-top: 1px solid #eee;
@@ -206,7 +204,6 @@ body {
     color: #999;
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
     .nav-container {
         flex-direction: column;

@@ -12,19 +12,20 @@ class Mascota(db.Model):
 
     fecha_registro = db.Column(db.DateTime, default=datetime.utcnow)
 
-    dueno_id = db.Column(
-        db.Integer,
-        db.ForeignKey("usuarios.id"),
-        nullable=False
-    )
+    dueno_id = db.Column(db.Integer, db.ForeignKey("usuarios.id"), nullable=False)
+    dueno = db.relationship("Dueno", back_populates="mascotas")
 
-    dueno = db.relationship(
-        "Dueno",
-        back_populates="mascotas"
-    )
+    imagen = db.Column(db.LargeBinary)
+    imagen_mimetype = db.Column(db.String(50))
 
     consultas = db.relationship(
         "Consulta",
+        back_populates="mascota",
+        cascade="all, delete-orphan"
+    )
+
+    historial = db.relationship(
+        "HistorialMedico",
         back_populates="mascota",
         cascade="all, delete-orphan"
     )
