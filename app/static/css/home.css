@@ -31,6 +31,12 @@ body {
         linear-gradient(145deg, var(--bg-cream), var(--bg-warm));
     position: relative;
     overflow-x: hidden;
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100svh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
     opacity: 0;
     transform: translateY(8px);
     transition: opacity 0.24s ease, transform 0.24s ease;
@@ -153,6 +159,7 @@ body.page-leaving {
 
 .home-main {
     display: grid;
+    flex: 1 0 auto;
     gap: 2.1rem;
     padding: 1.6rem 0 3.5rem;
 }
