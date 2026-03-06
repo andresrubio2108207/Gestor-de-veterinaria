@@ -5,58 +5,200 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultas</title>
     <link rel="icon" type="image/png" href="https://images.vexels.com/media/users/3/144928/isolated/preview/ebbccaf76f41f7d83e45a42974cfcd87-ilustracion-de-perro.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/consultas.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ui_system.css') }}">
 </head>
 <body>
-    <header class="header">
-        <div class="container nav-container">
-            <div class="logo">PetCare<span>.</span></div>
-            <nav class="nav">
-                <a href="{{ url_for('home') }}">Inicio</a>
-                <a href="{{ url_for('mascotas') }}">Mascotas</a>
-                <a href="{{ url_for('consultas') }}">Consultas</a>
-                <a href="{{ url_for('historial') }}">Historial</a>
-                <a href="{{ url_for('veterinarios') }}">Veterinarios</a>
-                <a href="{{ url_for('login') }}" class="btn-login">Ingresar</a>
-            </nav>
-        </div>
-    </header>
+    {% include 'partials/header.html' %}
 
     <main class="main">
         <section class="consulta container">
             <h2>Solicitar Consulta para tu Mascota</h2>
-            <form class="form-consulta">
-                <label for="nombre">Tu Nombre:</label>
-                <input type="text" id="nombre" name="nombre" placeholder="Nombre del dueño" required>
+            <p class="consulta-lead">Agenda una cita en minutos y recibe confirmación para seguimiento veterinario.</p>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="alerts" aria-live="polite">
+                {% for category, message in messages %}
+                <div class="alert {{ category if category in ['success', 'error'] else 'info' }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
 
-                <label for="email">Correo Electrónico:</label>
-                <input type="email" id="email" name="email" placeholder="tu@correo.com" required>
+            {% if es_dueno %}
+            <form class="form-consulta" method="POST" action="{{ url_for('auth.consultas') }}">
+                <div class="form-field">
+                    <label for="mascota_id">Mascota</label>
+                    <select id="mascota_id" name="mascota_id" required>
+                        {% if mascotas_usuario %}
+                            <option value="">Selecciona tu mascota registrada</option>
+                            {% for mascota in mascotas_usuario %}
+                            <option value="{{ mascota.id }}">{{ mascota.nombre }} ({{ mascota.especie }})</option>
+                            {% endfor %}
+                        {% else %}
+                            <option value="">No tienes mascotas registradas</option>
+                        {% endif %}
+                    </select>
+                </div>
 
-                <label for="mascota">Nombre de la Mascota:</label>
-                <input type="text" id="mascota" name="mascota" placeholder="Nombre de tu mascota" required>
+                {% if not mascotas_usuario %}
+                <div class="form-field">
+                    <p class="agenda-note">Primero registra una mascota para poder agendar una cita.</p>
+                </div>
+                {% endif %}
 
-                <label for="tipo">Tipo de Consulta:</label>
-                <select id="tipo" name="tipo" required>
-                    <option value="">Selecciona una opción</option>
-                    <option value="salud">Salud</option>
-                    <option value="alimentacion">Alimentación</option>
-                    <option value="adiestramiento">Adiestramiento</option>
-                    <option value="otros">Otros</option>
-                </select>
+                <div class="form-field">
+                    <label for="tipo">Tipo de consulta</label>
+                    <select id="tipo" name="tipo" required>
+                        <option value="">Selecciona una opción</option>
+                        <option value="salud">Salud</option>
+                        <option value="alimentacion">Alimentación</option>
+                        <option value="adiestramiento">Adiestramiento</option>
+                        <option value="peluqueria">Peluquería</option>
+                        <option value="otros">Otros</option>
+                    </select>
+                </div>
 
-                <label for="mensaje">Descripción del Problema / Consulta:</label>
-                <textarea id="mensaje" name="mensaje" rows="5" placeholder="Describe lo que necesitas..." required></textarea>
+                <div class="form-field form-field-half">
+                    <label for="fecha_cita">Fecha de cita</label>
+                    <input type="date" id="fecha_cita" name="fecha_cita" required>
+                </div>
 
-                <button type="submit" class="btn-primary">Enviar Consulta</button>
+                <div class="form-field form-field-half">
+                    <label for="hora_cita">Hora de cita</label>
+                    <input type="time" id="hora_cita" name="hora_cita" min="08:00" max="18:00" required>
+                </div>
+
+                <div class="form-field">
+                    <label for="modalidad">Modalidad</label>
+                    <select id="modalidad" name="modalidad" required>
+                        <option value="">Selecciona modalidad</option>
+                        <option value="presencial">Presencial</option>
+                        <option value="virtual">Virtual</option>
+                    </select>
+                </div>
+
+                <div class="form-field">
+                    <label for="mensaje">Descripción del problema o consulta</label>
+                    <textarea id="mensaje" name="mensaje" rows="5" placeholder="Describe lo que necesitas..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary" {% if not mascotas_usuario %}disabled{% endif %}>Enviar Consulta</button>
             </form>
+            {% else %}
+            <div class="agenda-note">Inicia sesión como dueño para agendar citas nuevas.</div>
+            {% endif %}
+
+            <section class="agenda" aria-labelledby="agenda-title">
+                <h3 id="agenda-title">Mis citas agendadas</h3>
+                {% if citas %}
+                <div class="agenda-list">
+                    {% for cita in citas %}
+                    <article class="agenda-item">
+                        <p class="agenda-date">{{ cita.fecha.strftime('%d/%m/%Y %H:%M') }}</p>
+                        <p><b>Mascota:</b> {{ cita.mascota.nombre }}</p>
+                        <p><b>Motivo:</b> {{ cita.motivo }}</p>
+                        <p><b>Veterinario:</b> {{ cita.veterinario.nombre if cita.veterinario else 'Sin asignar' }}</p>
+                        <form method="POST" action="{{ url_for('auth.cancelar_consulta', consulta_id=cita.id) }}" class="agenda-cancel-form">
+                            <button type="submit" class="btn-cancelar-cita js-cancelar-cita">Cancelar cita</button>
+                        </form>
+                    </article>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="agenda-empty">Aún no tienes citas agendadas.</p>
+                {% endif %}
+            </section>
+
+            <section class="agenda agenda-historial" aria-labelledby="agenda-history-title">
+                <h3 id="agenda-history-title">Citas pasadas y canceladas</h3>
+                {% if citas_historial %}
+                <div class="agenda-list">
+                    {% for cita in citas_historial %}
+                    <article class="agenda-item">
+                        <p class="agenda-date">{{ cita.fecha.strftime('%d/%m/%Y %H:%M') }}</p>
+                        <p><b>Estado:</b> {{ 'Cancelada' if cita.estado == 'cancelada' else 'Completada' }}</p>
+                        <p><b>Mascota:</b> {{ cita.mascota.nombre }}</p>
+                        <p><b>Motivo:</b> {{ cita.motivo }}</p>
+                    </article>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="agenda-empty">Aún no hay citas pasadas o canceladas.</p>
+                {% endif %}
+            </section>
         </section>
     </main>
 
-    <footer class="footer">
-        <p class="copyright">
-            <strong>© 2026 Clínica Veterinaria PetCare. Todos los derechos reservados.</strong>
-        </p>
-    </footer>
+    <div class="confirm-modal" id="confirmCancelModal" aria-hidden="true">
+        <div class="confirm-card" role="dialog" aria-modal="true" aria-labelledby="confirmCancelTitle">
+            <h3 id="confirmCancelTitle">Cancelar cita</h3>
+            <p>Esta acción marcará la cita como cancelada. ¿Deseas continuar?</p>
+            <div class="confirm-actions">
+                <button type="button" class="btn-cancel" id="cancelCancelAction">Volver</button>
+                <button type="button" class="btn-confirm" id="confirmCancelAction">Sí, cancelar cita</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fechaInput = document.getElementById('fecha_cita');
+        const confirmModal = document.getElementById('confirmCancelModal');
+        const confirmBtn = document.getElementById('confirmCancelAction');
+        const backBtn = document.getElementById('cancelCancelAction');
+        let pendingCancelForm = null;
+
+        document.querySelectorAll('.js-cancelar-cita').forEach(function (button) {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                pendingCancelForm = button.closest('form');
+                if (confirmModal) {
+                    confirmModal.classList.add('is-visible');
+                    confirmModal.setAttribute('aria-hidden', 'false');
+                }
+            });
+        });
+
+        if (backBtn) {
+            backBtn.addEventListener('click', function () {
+                pendingCancelForm = null;
+                confirmModal.classList.remove('is-visible');
+                confirmModal.setAttribute('aria-hidden', 'true');
+            });
+        }
+
+        if (confirmBtn) {
+            confirmBtn.addEventListener('click', function () {
+                if (pendingCancelForm) {
+                    pendingCancelForm.submit();
+                }
+            });
+        }
+
+        if (confirmModal) {
+            confirmModal.addEventListener('click', function (event) {
+                if (event.target === confirmModal) {
+                    confirmModal.classList.remove('is-visible');
+                    confirmModal.setAttribute('aria-hidden', 'true');
+                }
+            });
+        }
+
+        if (!fechaInput) return;
+
+        const today = new Date();
+        const tzOffset = today.getTimezoneOffset() * 60000;
+        const localISODate = new Date(today - tzOffset).toISOString().split('T')[0];
+        fechaInput.min = localISODate;
+    });
+    </script>
+
+    {% include 'partials/footer.html' %}
 </body>
 </html>

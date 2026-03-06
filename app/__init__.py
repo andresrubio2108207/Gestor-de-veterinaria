@@ -8,9 +8,16 @@ load_dotenv()
 db = SQLAlchemy()
 
 def create_app():
-    app = Flask(__name__, template_folder="templates", static_folder="static")  
-    app.config["SECRET_KEY"] = "clave_super_secreta"
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+    app = Flask(__name__, template_folder="templates", static_folder="static")
+
+    secret_key = os.getenv("SECRET_KEY")
+    database_url = os.getenv("DATABASE_URL")
+
+    if not database_url:
+        raise RuntimeError("DATABASE_URL no esta configurada.")
+
+    app.config["SECRET_KEY"] = secret_key or "dev-only-secret-key"
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_url
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     db.init_app(app)

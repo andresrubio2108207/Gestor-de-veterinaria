@@ -1,0 +1,121 @@
+:root {
+    --motion-fast: 180ms;
+    --motion-base: 220ms;
+    --motion-slow: 320ms;
+    --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+    --btn-height: 44px;
+    --btn-radius: 999px;
+    --btn-pad-x: 20px;
+    --btn-font-size: 0.95rem;
+    --btn-font-weight: 700;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-login,
+.btn-edit,
+.btn-delete,
+.btn-save,
+.btn-ghost,
+.btn-history,
+.btn-link,
+.service-btn,
+button[type="submit"] {
+    min-height: var(--btn-height);
+    padding: 0.62rem var(--btn-pad-x);
+    border-radius: var(--btn-radius);
+    font-size: var(--btn-font-size);
+    font-weight: var(--btn-font-weight);
+    transition:
+        transform var(--motion-fast) var(--ease-standard),
+        box-shadow var(--motion-base) var(--ease-standard),
+        border-color var(--motion-fast) var(--ease-standard),
+        background-color var(--motion-fast) var(--ease-standard),
+        color var(--motion-fast) var(--ease-standard),
+        opacity var(--motion-fast) var(--ease-standard);
+}
+
+.btn-login {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.nav a.nav-active {
+    color: #fff !important;
+    background: linear-gradient(130deg, #0b8a66, #12a779);
+    box-shadow: 0 8px 16px rgba(11, 138, 102, 0.22);
+}
+
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-login:hover,
+.btn-edit:hover,
+.btn-delete:hover,
+.btn-save:hover,
+.btn-ghost:hover,
+.btn-history:hover,
+.btn-link:hover,
+.service-btn:hover,
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+}
+
+input,
+select,
+textarea {
+    transition:
+        border-color var(--motion-fast) var(--ease-standard),
+        box-shadow var(--motion-fast) var(--ease-standard),
+        transform var(--motion-fast) var(--ease-standard),
+        background-color var(--motion-fast) var(--ease-standard),
+        color var(--motion-fast) var(--ease-standard);
+}
+
+.card,
+.panel,
+.value-card,
+.review-card,
+.service-card,
+.toast-item,
+.confirm-card,
+.edit-card,
+.consulta,
+.hero-content {
+    transition:
+        transform var(--motion-base) var(--ease-standard),
+        box-shadow var(--motion-base) var(--ease-standard),
+        border-color var(--motion-fast) var(--ease-standard),
+        background-color var(--motion-fast) var(--ease-standard),
+        opacity var(--motion-fast) var(--ease-standard);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-primary,
+    .btn-secondary,
+    .btn-login,
+    .btn-edit,
+    .btn-delete,
+    .btn-save,
+    .btn-ghost,
+    .btn-history,
+    .btn-link,
+    .service-btn,
+    button[type="submit"],
+    input,
+    select,
+    textarea,
+    .card,
+    .panel,
+    .value-card,
+    .review-card,
+    .service-card,
+    .toast-item,
+    .confirm-card,
+    .edit-card,
+    .consulta,
+    .hero-content {
+        transition: none !important;
+    }
+}

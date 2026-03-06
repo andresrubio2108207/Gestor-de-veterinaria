@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería de Pacientes | PetCare</title>
+    <link rel="icon" type="image/png" href="https://images.vexels.com/media/users/3/144928/isolated/preview/ebbccaf76f41f7d83e45a42974cfcd87-ilustracion-de-perro.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/galeria.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ui_system.css') }}">
+</head>
+<body>
+    {% include 'partials/header.html' %}
+
+    <main class="galeria-main">
+        <section class="galeria-hero container">
+            <p class="hero-tag">Galería visual de pacientes</p>
+            <h1>Galería de pacientes PetCare</h1>
+            <p>
+                Un espacio para ver parte de nuestros pacientes y las distintas especies
+                que acompañamos en su proceso de salud y bienestar.
+            </p>
+        </section>
+
+        <section class="gallery container" aria-label="Galería de pacientes">
+            <article class="patient-card">
+                <img src="https://www.purina.com/sites/default/files/2025-09/beagle2_red-collar.jpg" alt="Paciente 1 - Beagle" loading="lazy">
+                <div class="patient-meta"><h2>Toby</h2><span>Canino</span><div class="patient-rating" aria-label="Calificación 4 de 5"><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star">★</span></div><p class="patient-review">"Muy atentos con Toby, salimos tranquilos después de cada control."</p><p class="review-author">- Laura M., tutora</p></div>
+            </article>
+            <article class="patient-card">
+                <img src="https://cdn.sanity.io/images/5vm5yn1d/pro/5cb1f9400891d9da5a4926d7814bd1b89127ecba-1300x867.jpg?fm=webp&q=80" alt="Paciente 2 - Perro" loading="lazy">
+                <div class="patient-meta"><h2>Luna</h2><span>Canino</span><div class="patient-rating" aria-label="Calificación 5 de 5"><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span></div><p class="patient-review">"El equipo fue cálido y claro en cada paso de su tratamiento."</p><p class="review-author">- Felipe R., tutor</p></div>
+            </article>
+            <article class="patient-card">
+                <img src="https://images.ctfassets.net/denf86kkcx7r/4IPlg4Qazd4sFRuCUHIJ1T/f6c71da7eec727babcd554d843a528b8/gatocomuneuropeo-97" alt="Paciente 3 - Gato" loading="lazy">
+                <div class="patient-meta"><h2>Nina</h2><span>Felino</span><div class="patient-rating" aria-label="Calificación 3 de 5"><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star">★</span><span class="star">★</span></div><p class="patient-review">"Al principio estaba nerviosa, pero ahora confío más en el proceso."</p><p class="review-author">- Daniela C., tutora</p></div>
+            </article>
+            <article class="patient-card">
+                <img src="https://static.nationalgeographicla.com/files/styles/image_3200/public/3897187267_f36b5e4e7a_c.jpg?w=1600" alt="Paciente 4 - Gato" loading="lazy">
+                <div class="patient-meta"><h2>Milo</h2><span>Felino</span><div class="patient-rating" aria-label="Calificación 4 de 5"><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star">★</span></div><p class="patient-review">"Nos explicaron todo con paciencia y eso hizo la diferencia."</p><p class="review-author">- Camila P., tutora</p></div>
+            </article>
+            <article class="patient-card">
+                <img src="https://www.vitakraft.com/fileadmin/_processed_/1/3/csm_el_origen_del_perro_3cc21c0da1.jpg" alt="Paciente 5 - Perro" loading="lazy">
+                <div class="patient-meta"><h2>Bruno</h2><span>Canino</span><div class="patient-rating" aria-label="Calificación 5 de 5"><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span></div><p class="patient-review">"Siempre salimos con recomendaciones útiles y seguimiento real."</p><p class="review-author">- Paula S., tutora</p></div>
+            </article>
+            <article class="patient-card">
+                <img src="https://www.elespectador.com/resizer/v2/XQ5OB4SRZ5B5LD7S7QIRCLHTVY.jpg?auth=a69edf8bc4a7bcb75af1f456d43fb78c7edb6559de6a1094499b5239d8bce5c0&width=910&height=606&smart=true&quality=70" alt="Paciente 6 - Conejo" loading="lazy">
+                <div class="patient-meta"><h2>Ares</h2><span>Canino</span><div class="patient-rating" aria-label="Calificación 3 de 5"><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star">★</span><span class="star">★</span></div><p class="patient-review">"Nos ayudaron bastante con su dieta; vamos mejorando semana a semana."</p><p class="review-author">- Andrés V., tutor</p></div>
+            </article>
+            <article class="patient-card">
+                <img src="https://media.es.wired.com/photos/67afa9b53e4ec3352eac94c6/16:9/w_1280,c_limit/perro%20corriendo.jpg" alt="Paciente 7 - Perro" loading="lazy">
+                <div class="patient-meta"><h2>Rocky</h2><span>Canino</span><div class="patient-rating" aria-label="Calificación 4 de 5"><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star">★</span></div><p class="patient-review">"Muy buen trato, especialmente en controles deportivos."</p><p class="review-author">- Jorge T., tutor</p></div>
+            </article>
+            <article class="patient-card">
+                <img src="https://imagenes2.eltiempo.com/files/image_1200_535/uploads/2022/05/20/62876dae76a00.jpeg" alt="Paciente 8 - Conejo" loading="lazy">
+                <div class="patient-meta"><h2>Nube</h2><span>Canino</span><div class="patient-rating" aria-label="Calificación 5 de 5"><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span></div><p class="patient-review">"Excelente acompañamiento, se nota el amor por los exóticos."</p><p class="review-author">- Sofía G., tutora</p></div>
+            </article>
+            <article class="patient-card">
+                <img src="https://nupec.com/wp-content/uploads/2021/02/Captura-de-pantalla-2021-02-08-a-las-13.59.48.png" alt="Paciente 9 - Gato" loading="lazy">
+                <div class="patient-meta"><h2>Mora</h2><span>Felino</span><div class="patient-rating" aria-label="Calificación 3 de 5"><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star">★</span><span class="star">★</span></div><p class="patient-review">"Costó un poco al inicio, pero el plan dermatológico funcionó bien."</p><p class="review-author">- Ana L., tutora</p></div>
+            </article>
+            <article class="patient-card">
+                <img src="https://cdn.sanity.io/images/5vm5yn1d/pro/e8901b37029ada974f945ce569a5643b511fb4a9-1499x1000.jpg?fm=webp&q=80" alt="Paciente 10 - Perro" loading="lazy">
+                <div class="patient-meta"><h2>Simba</h2><span>Felino</span><div class="patient-rating" aria-label="Calificación 4 de 5"><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star">★</span></div><p class="patient-review">"Nos encantó el seguimiento; se siente un servicio cercano."</p><p class="review-author">- Miguel A., tutor</p></div>
+            </article>
+            <article class="patient-card">
+                <img src="https://www.terapiafelina.com/wp-content/uploads/2021/12/GB09_348_Moway-4-1024x680.jpg" alt="Paciente 11 - Gato" loading="lazy">
+                <div class="patient-meta"><h2>Kira</h2><span>Felino</span><div class="patient-rating" aria-label="Calificación 5 de 5"><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span></div><p class="patient-review">"La atención felina fue impecable y muy respetuosa con su carácter."</p><p class="review-author">- Renata B., tutora</p></div>
+            </article>
+            <article class="patient-card">
+                <img src="https://images.ctfassets.net/denf86kkcx7r/5YQU0fNpyntMjDGr31WTD0/86167f4c6af32f60d772753d9a97bf51/bichonmaltesraza-73?fm=webp&w=612" alt="Paciente 12 - Bichon maltes" loading="lazy">
+                <div class="patient-meta"><h2>Coco</h2><span>Canino</span><div class="patient-rating" aria-label="Calificación 4 de 5"><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star is-on">★</span><span class="star">★</span></div><p class="patient-review">"Muy contenta con la peluquería y el control general en una sola visita."</p><p class="review-author">- Marcela H., tutora</p></div>
+            </article>
+        </section>
+    </main>
+
+    {% include 'partials/footer.html' %}
+</body>
+</html>

@@ -10,6 +10,7 @@ class Consulta(db.Model):
     motivo = db.Column(db.Text, nullable=False)
     diagnostico = db.Column(db.Text)
     tratamiento = db.Column(db.Text)
+    estado = db.Column(db.String(20), nullable=False, default="agendada")
 
     mascota_id = db.Column(
         db.Integer,

@@ -141,7 +141,6 @@ body {
     background-color: #2c3792;
 }
 
-/* Error */
 .error {
     color: #d93025;
     margin-top: 15px;
@@ -149,7 +148,6 @@ body {
     font-weight: bold;
 }
 
-/* Texto inferior */
 .text-center {
     text-align: center;
     margin-top: 25px;
@@ -157,7 +155,6 @@ body {
     color: #666;
 }
 
-/* Botón link */
 .btn-link {
     text-decoration: none;
     background-color: #ff4d6d;

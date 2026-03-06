@@ -2,56 +2,199 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mis Mascotas</title>
     <link rel="icon" type="image/png" href="https://images.vexels.com/media/users/3/144928/isolated/preview/ebbccaf76f41f7d83e45a42974cfcd87-ilustracion-de-perro.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/mascotas.css') }}">
-    <style> .empty { padding: 40px; text-align:center; }</style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ui_system.css') }}">
 </head>
 <body>
-    <header class="header">
-        <div class="container nav-container">
-            <div class="logo">PetCare<span>.</span></div>
-            <nav class="nav">
-                <a href="{{ url_for('auth.home') }}">Inicio</a>
-                <a href="{{ url_for('mascota.ver_mascotas') }}">Mascotas</a>
-                <a href="{{ url_for('auth.consultas') }}">Consultas</a>
-            </nav>
-        </div>
-    </header>
+    {% include 'partials/header.html' %}
 
-    <main class="main">
-        {% if mascotas %}
-        <div class="cards-container">
-            {% for m in mascotas %}
-            <div class="card">
-                <div class="card-header">
-                    {% if m.imagen %}
-                    <div class="thumb">
-                        <img src="{{ url_for('mascota.mascota_imagen', mascota_id=m.id) }}" alt="{{ m.nombre }}">
-                    </div>
-                    {% else %}
-                    <div class="thumb placeholder"></div>
-                    {% endif %}
-                    <h2>{{ m.nombre }}</h2>
-                    <form method="POST" action="{{ url_for('mascota.eliminar_mascota', mascota_id=m.id) }}" onsubmit="return confirm('¿Eliminar mascota? Esta acción es irreversible.');">
-                        <button type="submit" class="btn-delete">Eliminar</button>
-                    </form>
+    <main class="main mascotas-main">
+        <section class="mascotas-layout">
+            <div class="mascotas-panel">
+                <div class="panel-header">
+                    <h1>Mis Mascotas</h1>
+                    <a href="{{ url_for('mascota.registro_mascota') }}" class="btn-primary btn-register">Registrar Mascota</a>
                 </div>
-                {% if m.imagen %}
-                    <img src="{{ url_for('mascota.mascota_imagen', mascota_id=m.id) }}" alt="{{ m.nombre }}" class="card-image"/>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true">
+                    {% for category, message in messages %}
+                    <div class="toast-item {{ category if category in ['success', 'error'] else 'info' }}">
+                        <span class="toast-dot"></span>
+                        <p>{{ message }}</p>
+                        <span class="toast-progress"></span>
+                    </div>
+                    {% endfor %}
+                </div>
                 {% endif %}
-                <p><b>Especie:</b> {{ m.especie }}</p>
-                <p><b>Raza:</b> {{ m.raza or '-' }}</p>
-                <p><b>Edad:</b> {{ m.edad }} años</p>
+                {% endwith %}
+
+                {% if mascotas %}
+                <div class="cards-skeleton" id="cardsSkeleton" aria-hidden="true">
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                </div>
+
+                <div class="cards-container is-hidden" id="cardsContainer">
+                    {% for m in mascotas %}
+                    <div class="card" style="--item-index: {{ loop.index0 }};">
+                        <div class="card-actions">
+                            <a href="{{ url_for('mascota.editar_mascota', mascota_id=m.id) }}" class="btn-edit">Editar</a>
+                            <form method="POST" action="{{ url_for('mascota.eliminar_mascota', mascota_id=m.id) }}" class="delete-form js-delete-form">
+                                <button type="submit" class="btn-delete">Eliminar</button>
+                            </form>
+                        </div>
+
+                        <div class="avatar-wrap">
+                            {% if m.imagen %}
+                                {% set image_url = url_for('mascota.mascota_imagen', mascota_id=m.id) %}
+                                <img src="{{ image_url }}" alt="{{ m.nombre }}" class="avatar avatar-img" loading="lazy">
+                                <div class="avatar placeholder is-hidden"><i class="fa-solid fa-paw"></i></div>
+                                <p class="image-error-msg is-hidden">No se pudo cargar la foto.</p>
+                            {% else %}
+                                <div class="avatar placeholder"><i class="fa-solid fa-paw"></i></div>
+                            {% endif %}
+                        </div>
+
+                        <h2 class="card-name">{{ m.nombre }}</h2>
+
+                        <div class="card-info">
+                            <p><b>Especie:</b> {{ m.especie }}</p>
+                            <p><b>Raza:</b> {{ m.raza or '-' }}</p>
+                            <p><b>Edad:</b> {{ m.edad }} {{ 'año' if m.edad == 1 else 'años' }}</p>
+                        </div>
+
+                        <a href="{{ url_for('mascota.historial_mascota', mascota_id=m.id) }}" class="btn-history">
+                            <i class="fa-solid fa-notes-medical"></i> Ver historial médico
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty">
+                    <div class="empty-icon"><i class="fa-solid fa-paw"></i></div>
+                    <h3>Tu panel de mascotas está listo para empezar</h3>
+                    <p>Registra a tu primera mascota para ver su ficha, historial médico y acciones rápidas.</p>
+                    <a href="{{ url_for('mascota.registro_mascota') }}" class="btn-primary">Registrar primera mascota</a>
+                </div>
+                {% endif %}
             </div>
-            {% endfor %}
-        </div>
-        {% else %}
-        <div class="empty">
-            <p>No tienes mascotas registradas aún.</p>
-            <a href="{{ url_for('mascota.registro_mascota') }}" class="btn-primary">Registrar primera mascota</a>
-        </div>
-        {% endif %}
+
+            <aside class="mascotas-aside" aria-hidden="true"></aside>
+        </section>
+
+        <a href="{{ url_for('mascota.registro_mascota') }}" class="btn-register-mobile">
+            <i class="fa-solid fa-plus"></i> Registrar Mascota
+        </a>
     </main>
+
+    <div class="confirm-modal" id="confirmModal" aria-hidden="true">
+        <div class="confirm-card" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+            <h3 id="confirmTitle">Eliminar mascota</h3>
+            <p>Esta acción no se puede deshacer. ¿Deseas continuar?</p>
+            <div class="confirm-actions">
+                <button type="button" class="btn-cancel" id="cancelDelete">Cancelar</button>
+                <button type="button" class="btn-confirm" id="confirmDelete">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const skeleton = document.getElementById('cardsSkeleton');
+        const cardsContainer = document.getElementById('cardsContainer');
+        const confirmModal = document.getElementById('confirmModal');
+        const confirmDeleteBtn = document.getElementById('confirmDelete');
+        const cancelDeleteBtn = document.getElementById('cancelDelete');
+        const toastStack = document.getElementById('toastStack');
+        let pendingDeleteForm = null;
+
+        function revealCards() {
+            if (cardsContainer) {
+                cardsContainer.classList.remove('is-hidden');
+            }
+            if (skeleton) {
+                skeleton.classList.add('is-hidden');
+            }
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(revealCards, 250);
+        });
+
+        document.querySelectorAll('.js-delete-form').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                pendingDeleteForm = form;
+                if (confirmModal) {
+                    confirmModal.classList.add('is-visible');
+                    confirmModal.setAttribute('aria-hidden', 'false');
+                }
+            });
+        });
+
+        if (cancelDeleteBtn) {
+            cancelDeleteBtn.addEventListener('click', function () {
+                pendingDeleteForm = null;
+                confirmModal.classList.remove('is-visible');
+                confirmModal.setAttribute('aria-hidden', 'true');
+            });
+        }
+
+        if (confirmDeleteBtn) {
+            confirmDeleteBtn.addEventListener('click', function () {
+                if (pendingDeleteForm) {
+                    pendingDeleteForm.submit();
+                }
+            });
+        }
+
+        if (confirmModal) {
+            confirmModal.addEventListener('click', function (event) {
+                if (event.target === confirmModal) {
+                    confirmModal.classList.remove('is-visible');
+                    confirmModal.setAttribute('aria-hidden', 'true');
+                }
+            });
+        }
+
+        document.querySelectorAll('.avatar-img').forEach(function (image) {
+            image.addEventListener('error', function () {
+                image.classList.add('is-hidden');
+                const wrapper = image.closest('.avatar-wrap');
+                if (!wrapper) return;
+                const placeholder = wrapper.querySelector('.placeholder');
+                const msg = wrapper.querySelector('.image-error-msg');
+                if (placeholder) placeholder.classList.remove('is-hidden');
+                if (msg) msg.classList.remove('is-hidden');
+            });
+        });
+
+        if (toastStack) {
+            const toasts = toastStack.querySelectorAll('.toast-item');
+            toasts.forEach(function (toast, index) {
+                setTimeout(function () {
+                    toast.classList.add('show');
+                }, 120 * index);
+                setTimeout(function () {
+                    toast.classList.remove('show');
+                }, 3900 + (130 * index));
+            });
+            setTimeout(function () {
+                toastStack.remove();
+            }, 5300);
+        }
+    });
+    </script>
+    {% include 'partials/footer.html' %}
 </body>
 </html>

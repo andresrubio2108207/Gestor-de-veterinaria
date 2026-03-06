@@ -2,19 +2,10 @@ from flask import Blueprint, render_template, session, redirect, url_for, reques
 from app import db
 from app.models.mascota import Mascota
 from app.models.historial_medico import HistorialMedico
-from functools import wraps
+from app.utils.decorators import login_required
+
 
 mascota_bp = Blueprint("mascota", __name__, url_prefix="/mascotas")
-
-
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if "user_id" not in session:
-            flash("Debes iniciar sesión primero.", "error")
-            return redirect(url_for("auth.login"))
-        return f(*args, **kwargs)
-    return decorated_function
 
 
 @mascota_bp.route('/registro_mascota', methods=['GET', 'POST'])
@@ -38,7 +29,7 @@ def registro_mascota():
         try:
             edad_int = int(edad)
         except (ValueError, TypeError):
-            flash("Edad debe ser un número entero", "error")
+            flash("La edad debe ser un número entero.", "error")
             return redirect(url_for('mascota.registro_mascota'))
 
         dueno_id = session.get('user_id')
@@ -55,21 +46,19 @@ def registro_mascota():
         )
 
         try:
-            # Procesar imagen si fue subida
             imagen_file = request.files.get('imagen')
             if imagen_file and imagen_file.filename:
                 nueva_mascota.imagen = imagen_file.read()
                 nueva_mascota.imagen_mimetype = imagen_file.mimetype
 
             db.session.add(nueva_mascota)
-            # si el usuario envió información de historial, crear el registro
             if historial_text:
                 nueva_historial = HistorialMedico(descripcion=historial_text, mascota=nueva_mascota)
                 db.session.add(nueva_historial)
 
             db.session.commit()
             return redirect(url_for('mascota.ver_mascotas'))
-        except Exception as e:
+        except Exception:
             db.session.rollback()
             flash("Ocurrió un error al registrar la mascota. Intenta de nuevo.", "error")
             return redirect(url_for('mascota.registro_mascota'))
@@ -81,7 +70,6 @@ def registro_mascota():
 def mascota_imagen(mascota_id):
     m = Mascota.query.get_or_404(mascota_id)
     if not m.imagen:
-        # No image stored
         return ('', 404)
     return Response(m.imagen, mimetype=m.imagen_mimetype)
 
@@ -97,7 +85,6 @@ def ver_mascotas():
 @login_required
 def eliminar_mascota(mascota_id):
     m = Mascota.query.get_or_404(mascota_id)
-    # Only allow owner or veterinario to delete
     user_id = session.get('user_id')
     tipo = session.get('tipo')
     if not user_id:
@@ -111,8 +98,96 @@ def eliminar_mascota(mascota_id):
     try:
         db.session.delete(m)
         db.session.commit()
-    except Exception as e:
+        flash('Mascota eliminada correctamente.', 'success')
+    except Exception:
         db.session.rollback()
         flash('Ocurrió un error al eliminar la mascota.', 'error')
 
     return redirect(url_for('mascota.ver_mascotas'))
+
+
+@mascota_bp.route('/<int:mascota_id>/editar', methods=['GET', 'POST'])
+@login_required
+def editar_mascota(mascota_id):
+    mascota = Mascota.query.get_or_404(mascota_id)
+
+    user_id = session.get('user_id')
+    tipo = session.get('tipo')
+    if not (tipo == 'veterinario' or user_id == mascota.dueno_id):
+        flash('No tienes permiso para editar esta mascota.', 'error')
+        return redirect(url_for('mascota.ver_mascotas'))
+
+    if request.method == 'POST':
+        nombre = request.form.get('nombre', '').strip()
+        especie = request.form.get('especie', '').strip()
+        raza = request.form.get('raza', '').strip()
+        edad = request.form.get('edad')
+
+        if not nombre or not especie or not edad:
+            flash('Nombre, especie y edad son obligatorios.', 'error')
+            return redirect(url_for('mascota.editar_mascota', mascota_id=mascota.id))
+
+        try:
+            edad_int = int(edad)
+        except (ValueError, TypeError):
+            flash('Edad debe ser un número entero.', 'error')
+            return redirect(url_for('mascota.editar_mascota', mascota_id=mascota.id))
+
+        mascota.nombre = nombre
+        mascota.especie = especie
+        mascota.raza = raza or None
+        mascota.edad = edad_int
+
+        imagen_file = request.files.get('imagen')
+        if imagen_file and imagen_file.filename:
+            mascota.imagen = imagen_file.read()
+            mascota.imagen_mimetype = imagen_file.mimetype
+
+        try:
+            db.session.commit()
+            flash('Mascota actualizada correctamente.', 'success')
+            return redirect(url_for('mascota.ver_mascotas'))
+        except Exception:
+            db.session.rollback()
+            flash('No se pudo actualizar la mascota.', 'error')
+
+    return render_template('editar_mascota.html', mascota=mascota)
+
+
+@mascota_bp.route('/<int:mascota_id>/historial', methods=['GET', 'POST'])
+@login_required
+def historial_mascota(mascota_id):
+    mascota = Mascota.query.get_or_404(mascota_id)
+
+    user_id = session.get('user_id')
+    tipo = session.get('tipo')
+    if not (tipo == 'veterinario' or user_id == mascota.dueno_id):
+        flash('No tienes permiso para ver este historial.', 'error')
+        return redirect(url_for('mascota.ver_mascotas'))
+
+    if request.method == 'POST':
+        descripcion = request.form.get('descripcion', '').strip()
+        diagnostico = request.form.get('diagnostico', '').strip()
+        tratamiento = request.form.get('tratamiento', '').strip()
+
+        if not descripcion:
+            flash('La descripción es obligatoria.', 'error')
+            return redirect(url_for('mascota.historial_mascota', mascota_id=mascota.id))
+
+        nuevo = HistorialMedico(
+            descripcion=descripcion,
+            diagnostico=diagnostico or None,
+            tratamiento=tratamiento or None,
+            mascota=mascota
+        )
+        try:
+            db.session.add(nuevo)
+            db.session.commit()
+            flash('Entrada de historial agregada.', 'success')
+            return redirect(url_for('mascota.historial_mascota', mascota_id=mascota.id))
+        except Exception:
+            db.session.rollback()
+            flash('No se pudo guardar la entrada de historial.', 'error')
+
+    historial = HistorialMedico.query.filter_by(mascota_id=mascota.id).order_by(HistorialMedico.fecha.desc()).all()
+    return render_template('mascota_historial.html', mascota=mascota, historial=historial)

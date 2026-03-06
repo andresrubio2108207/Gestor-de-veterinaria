@@ -16,7 +16,7 @@ class Mascota(db.Model):
     dueno = db.relationship("Dueno", back_populates="mascotas")
 
     imagen = db.Column(db.LargeBinary)
-    imagen_mimetype = db.Column(db.String(50))
+    imagen_mimetype = db.Column(db.String(150))
 
     consultas = db.relationship(
         "Consulta",

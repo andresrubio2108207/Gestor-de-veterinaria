@@ -5,61 +5,183 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PetCare</title>
     <link rel="icon" type="image/png" href="https://images.vexels.com/media/users/3/144928/isolated/preview/ebbccaf76f41f7d83e45a42974cfcd87-ilustracion-de-perro.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ui_system.css') }}">
 </head>
 <body>
-    <header class="header">
-        <div class="container nav-container">
-            <div class="logo">PetCare<span>.</span></div>
-            <nav class="nav">
-                <a href="{{ url_for('auth.home') }}">Inicio</a>
-                <a href="{{ url_for('mascota.ver_mascotas') }}">Mis Mascotas</a>
-                <a href="{{ url_for('auth.consultas') }}">Consultas</a>
-                <a href="{{ url_for('auth.servicios') }}">Servicios</a>
-                <a href="{{ url_for('auth.historial') }}">Historial</a>
-                {% if session.get('user_id') %}
-                    <span>Hola, {{ session.nombre }}</span>
-                    <a href="{{ url_for('auth.logout') }}" class="btn-login">Cerrar sesión</a>
-                {% else %}
-                    <a href="{{ url_for('auth.login') }}" class="btn-login">Ingresar</a>
+    {% include 'partials/header.html' %}
+
+    <main class="home-main">
+        <section class="hero container">
+            <div class="hero-content">
+                <p class="eyebrow">Atención veterinaria en línea y en clínica</p>
+
+                <h1>
+                    Bienvenid@{% if session.get('nombre') %}, {{ session.nombre }}{% endif %}
+                    <span>Cuidado profesional para cada etapa de tu mascota</span>
+                </h1>
+
+                <p class="hero-copy">
+                    Gestiona consultas, historial y seguimiento médico en un solo lugar.
+                    Menos fricción para ti, más bienestar para tu compañero.
+                </p>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flashes" role="status" aria-live="polite">
+                        {% for category, message in messages %}
+                            <p class="flash {{ category }}">{{ message }}</p>
+                        {% endfor %}
+                    </div>
                 {% endif %}
-            </nav>
-        </div>
-    </header>
+                {% endwith %}
 
-<main class="main">
-    <section class="hero">
-        
-        <div class="hero-content">
-            <h1>
-                Bienvenid@{% if session.get('nombre') %}, {{ session.nombre }}{% endif %}<br>
-                <strong>Estamos al cuidado de tu mascota</strong>
-            </h1>
-
-            <p>
-                ¿Cómo te podemos ayudar?
-            </p>
-
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="flashes">
-                    {% for category, message in messages %}
-                        <p class="flash {{ category }}">{{ message }}</p>
-                    {% endfor %}
+                <div class="hero-actions">
+                    <a href="{{ url_for('mascota.registro_mascota') }}" class="btn btn-primary">
+                        Registrar mascota
+                    </a>
+                    <a href="{{ url_for('auth.consultas') }}" class="btn btn-secondary">
+                        Solicitar consulta
+                    </a>
                 </div>
-            {% endif %}
-            {% endwith %}
 
-            <div class="hero-buttons">
-                   <a href="{{ url_for('mascota.registro_mascota') }}" class="btn-primary">Registrar Mascota</a>
-                    <a href="{{ url_for('auth.consultas') }}" class="btn-secondary">Solicitar Consulta</a>
+                <div class="hero-metrics" aria-label="Indicadores de servicio">
+                    <article class="metric">
+                        <strong>24/7</strong>
+                        <span>Soporte para seguimiento</span>
+                    </article>
+                    <article class="metric">
+                        <strong>+300</strong>
+                        <span>Mascotas registradas</span>
+                    </article>
+                    <article class="metric">
+                        <strong>100%</strong>
+                        <span>Historial centralizado</span>
+                    </article>
+                </div>
             </div>
-        </div>
 
-        <div class="hero-image"></div>
+            <div class="hero-visual" aria-hidden="true">
+                <div class="photo-card"></div>
+                <div class="floating-badge badge-top">
+                    <i class="fa-solid fa-shield-dog"></i>
+                    Vacunas y controles al día
+                </div>
+                <div class="floating-badge badge-bottom">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                    Recordatorios inteligentes
+                </div>
+            </div>
+        </section>
 
-    </section>
-</main>
+        <section class="value container" aria-label="Servicios principales">
+            <article class="value-card">
+                <i class="fa-solid fa-notes-medical"></i>
+                <h2>Historial claro</h2>
+                <p>Toda la información médica de tu mascota ordenada y disponible cuando la necesites.</p>
+            </article>
+            <article class="value-card">
+                <i class="fa-solid fa-calendar-check"></i>
+                <h2>Agenda rápida</h2>
+                <p>Programa consultas en segundos y recibe confirmaciones sin llamadas ni esperas largas.</p>
+            </article>
+            <article class="value-card">
+                <i class="fa-solid fa-stethoscope"></i>
+                <h2>Seguimiento real</h2>
+                <p>Control de tratamientos, observaciones y evolución para decisiones médicas mejores.</p>
+            </article>
+        </section>
+
+        <section class="services-showcase container" aria-label="Área de servicios">
+            <div class="services-heading">
+            <p class="eyebrow">Área de servicios</p>
+                <h2>Todo lo que tu mascota necesita en un mismo lugar</h2>
+            </div>
+
+            <div class="services-grid">
+                <article class="service-card">
+                    <div class="service-thumb dog"></div>
+                    <h3>Cuidado dental</h3>
+                    <p>Limpieza y revisión preventiva para una sonrisa sana y sin dolor.</p>
+                    <a href="{{ url_for('auth.veterinarios') }}" class="service-btn">Ver profesionales</a>
+                </article>
+
+                <article class="service-card">
+                    <div class="service-thumb cat"></div>
+                    <h3>Chequeo general</h3>
+                    <p>Control completo para detectar cambios a tiempo y prevenir complicaciones.</p>
+                    <a href="{{ url_for('auth.veterinarios') }}" class="service-btn">Ver profesionales</a>
+                </article>
+
+                <article class="service-card">
+                    <div class="service-thumb grooming"></div>
+                    <h3>Peluquería</h3>
+                    <p>Baño, corte y cuidado del pelaje para que salga feliz y fresco.</p>
+                    <a href="{{ url_for('auth.veterinarios') }}" class="service-btn">Ver profesionales</a>
+                </article>
+            </div>
+        </section>
+
+        <section class="reviews container" aria-label="Reseñas de familias PetCare">
+            <div class="reviews-heading">
+                <p class="eyebrow">Voces de la manada</p>
+            <h2>Reseñas reales, colitas felices</h2>
+            <p>Historias de perritos que ya viven su mejor versión con controles al día y cuidado cercano.</p>
+            </div>
+
+            <div class="reviews-grid">
+                <article class="review-card review-lead">
+                    <div class="review-dog"></div>
+                    <div class="review-content">
+                        <div class="review-stars" aria-label="Calificación 5 de 5">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p>"Desde que Bruno tiene su historial en PetCare, no volvimos a perder una vacuna. El equipo nos avisa todo y responde súper rápido."</p>
+                        <h3>Bruno, Golden Retriever</h3>
+                        <span>Familia Salazar</span>
+                    </div>
+                </article>
+
+                <article class="review-card review-mini">
+                    <div class="review-stars" aria-label="Calificación 5 de 5">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p>"Milo se estresaba en cada control. Ahora llegamos con todo listo y sale moviendo la cola."</p>
+                    <h3>Milo, Beagle</h3>
+                </article>
+
+                <article class="review-card review-mini">
+                    <div class="review-stars" aria-label="Calificación 5 de 5">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p>"Con Nala usamos recordatorios y agendamos en dos clics. Se siente todo muy cuidado."</p>
+                    <h3>Nala, Mestiza</h3>
+                </article>
+
+                <article class="review-card review-quote">
+                    <i class="fa-solid fa-quote-left"></i>
+                    <p>"Lo mejor: no solo atienden, hacen seguimiento de verdad. Firulais mejoró su piel en semanas."</p>
+                    <h3>Firulais, French Poodle</h3>
+                </article>
+            </div>
+
+            <div class="pet-mosaic" aria-hidden="true">
+                <div class="tile tile-text">
+                    <h3>Nuestros momentos felices</h3>
+                </div>
+                <div class="tile tile-photo photo-one"></div>
+                <div class="tile tile-photo photo-two"></div>
+                <div class="tile tile-text accent">
+                    <h3>Mika y Paco<br>son equipo PetCare</h3>
+                </div>
+            </div>
+        </section>
+    </main>
+    {% include 'partials/footer.html' %}
 </body>
 </html>

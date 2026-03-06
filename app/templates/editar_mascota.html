@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Mascota</title>
+    <link rel="icon" type="image/png" href="https://images.vexels.com/media/users/3/144928/isolated/preview/ebbccaf76f41f7d83e45a42974cfcd87-ilustracion-de-perro.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/editar_mascota.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ui_system.css') }}">
+</head>
+<body>
+    {% include 'partials/header.html' %}
+
+    <main class="edit-main">
+        <section class="edit-card">
+            <h1 class="edit-title">Editar {{ mascota.nombre }}</h1>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="flashes">
+                {% for category, message in messages %}
+                <div class="flash {{ category }}">
+                    {% if category == 'success' %}
+                    <span class="flash-check" aria-hidden="true"><span class="check-stem"></span><span class="check-kick"></span></span>
+                    {% endif %}
+                    <span>{{ message }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <form method="POST" enctype="multipart/form-data">
+                <div class="grid">
+                    <div class="field">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" value="{{ mascota.nombre }}" required>
+                    </div>
+                    <div class="field">
+                        <label for="especie">Especie</label>
+                        <input type="text" id="especie" name="especie" value="{{ mascota.especie }}" required>
+                    </div>
+                    <div class="field">
+                        <label for="raza">Raza</label>
+                        <input type="text" id="raza" name="raza" value="{{ mascota.raza or '' }}">
+                    </div>
+                    <div class="field">
+                        <label for="edad">Edad</label>
+                        <input type="number" id="edad" name="edad" value="{{ mascota.edad }}" min="0" required>
+                    </div>
+                    <div class="field full">
+                        <label for="imagen">Nueva imagen (opcional)</label>
+                        <input type="file" id="imagen" name="imagen" accept="image/*">
+                        <p class="preview">Solo se reemplaza si seleccionas una imagen nueva.</p>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <a href="{{ url_for('mascota.ver_mascotas') }}" class="btn-ghost">Volver</a>
+                    <button type="submit" class="btn-save">Guardar cambios</button>
+                </div>
+            </form>
+        </section>
+    </main>
+    {% include 'partials/footer.html' %}
+</body>
+</html>

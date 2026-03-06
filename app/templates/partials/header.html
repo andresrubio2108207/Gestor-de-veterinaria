@@ -1,0 +1,19 @@
+<header class="header">
+    <div class="container nav-container">
+        <div class="logo" role="link" tabindex="0" onclick="window.location.href='{{ url_for('auth.home') }}'" onkeydown="if(event.key==='Enter' || event.key===' '){ event.preventDefault(); window.location.href='{{ url_for('auth.home') }}'; }">PetCare<span>.</span></div>
+        <nav class="nav">
+            <a href="{{ url_for('auth.home') }}" class="{% if request.endpoint == 'auth.home' %}nav-active{% endif %}">Inicio</a>
+            <a href="{{ url_for('mascota.ver_mascotas') }}" class="{% if request.endpoint in ['mascota.ver_mascotas', 'mascota.registro_mascota', 'mascota.editar_mascota', 'mascota.historial_mascota'] %}nav-active{% endif %}">Mis Mascotas</a>
+            <a href="{{ url_for('auth.consultas') }}" class="{% if request.endpoint in ['auth.consultas', 'auth.cancelar_consulta'] %}nav-active{% endif %}">Consultas</a>
+            <a href="{{ url_for('auth.veterinarios') }}" class="{% if request.endpoint == 'auth.veterinarios' %}nav-active{% endif %}">Veterinarios</a>
+            <a href="{{ url_for('auth.galeria') }}" class="{% if request.endpoint == 'auth.galeria' %}nav-active{% endif %}">Galería</a>
+            {% if session.get('user_id') %}
+                <span>Hola, {{ session.nombre }}</span>
+                <a href="{{ url_for('auth.logout') }}" class="btn-login">Cerrar sesión</a>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}" class="btn-login">Ingresar</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+<script defer src="{{ url_for('static', filename='js/ui_transitions.js') }}"></script>

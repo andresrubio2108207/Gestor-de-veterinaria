@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial Médico</title>
+    <link rel="icon" type="image/png" href="https://images.vexels.com/media/users/3/144928/isolated/preview/ebbccaf76f41f7d83e45a42974cfcd87-ilustracion-de-perro.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mascota_historial.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ui_system.css') }}">
+</head>
+<body>
+    {% include 'partials/header.html' %}
+
+    <main class="hist-main">
+        <section class="hist-wrap">
+            <article class="panel">
+                <h1>Historial de {{ mascota.nombre }}</h1>
+                <p class="pet-resume"><strong>Especie:</strong> {{ mascota.especie }} | <strong>Raza:</strong> {{ mascota.raza or '-' }} | <strong>Edad:</strong> {{ mascota.edad }}</p>
+                <a class="back-link" href="{{ url_for('mascota.ver_mascotas') }}"><i class="fa-solid fa-arrow-left"></i> Volver a mascotas</a>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="flashes">
+                    {% for category, message in messages %}
+                    <div class="flash {{ category }}">
+                        {% if category == 'success' %}
+                        <span class="flash-check" aria-hidden="true"><span class="check-stem"></span><span class="check-kick"></span></span>
+                        {% endif %}
+                        <span>{{ message }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+
+                <h2>Nueva entrada</h2>
+                <form method="POST">
+                    <div class="field">
+                        <label for="descripcion">Descripción</label>
+                        <textarea id="descripcion" name="descripcion" required></textarea>
+                    </div>
+                    <div class="field">
+                        <label for="diagnostico">Diagnóstico</label>
+                        <textarea id="diagnostico" name="diagnostico"></textarea>
+                    </div>
+                    <div class="field">
+                        <label for="tratamiento">Tratamiento</label>
+                        <textarea id="tratamiento" name="tratamiento"></textarea>
+                    </div>
+                    <button type="submit" class="btn-save">Guardar entrada</button>
+                </form>
+            </article>
+
+            <article class="panel">
+                <h2>Entradas registradas</h2>
+                {% if historial %}
+                    {% for item in historial %}
+                    <div class="entry" style="--entry-index: {{ loop.index0 }};">
+                        <small>{{ item.fecha.strftime('%d/%m/%Y %H:%M') }}</small>
+                        <p><strong>Descripción:</strong> {{ item.descripcion }}</p>
+                        <p><strong>Diagnóstico:</strong> {{ item.diagnostico or '-' }}</p>
+                        <p><strong>Tratamiento:</strong> {{ item.tratamiento or '-' }}</p>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-historial">Todavía no hay entradas de historial para esta mascota.</div>
+                {% endif %}
+            </article>
+        </section>
+    </main>
+    {% include 'partials/footer.html' %}
+</body>
+</html>

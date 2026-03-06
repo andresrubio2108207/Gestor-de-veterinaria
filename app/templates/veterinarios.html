@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veterinarios | PetCare</title>
+    <link rel="icon" type="image/png" href="https://images.vexels.com/media/users/3/144928/isolated/preview/ebbccaf76f41f7d83e45a42974cfcd87-ilustracion-de-perro.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/veterinarios.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ui_system.css') }}">
+</head>
+<body>
+    {% include 'partials/header.html' %}
+
+    <main class="vets-main">
+        <section class="vets-hero container">
+            <p class="eyebrow">Equipo profesional PetCare</p>
+            <h1>Encuentra al especialista ideal para tu mascota</h1>
+            <p class="lead">
+                Nuestro equipo integra medicina general, cirugía, odontología, peluquería y comportamiento
+                para brindar atención integral en cada etapa de vida.
+            </p>
+            <p class="hero-note">Conoce sus perfiles, experiencia clínica y áreas de enfoque.</p>
+        </section>
+
+        <section class="container section-heading" aria-label="Introducción de especialidades">
+            <h2>Especialidades del equipo</h2>
+            <p>Cada profesional aporta una mirada clínica diferente para un cuidado completo y cercano.</p>
+        </section>
+
+        <section id="especialidades" class="specialties container" aria-label="Especialidades veterinarias">
+            <article class="specialty-card">
+                <i class="fa-solid fa-user-doctor"></i>
+                <h2>Medicina general</h2>
+                <p>Chequeos, vacunación y seguimiento preventivo para perros y gatos de todas las edades.</p>
+            </article>
+            <article class="specialty-card">
+                <i class="fa-solid fa-scalpel"></i>
+                <h2>Cirugía</h2>
+                <p>Procedimientos programados y de urgencia con evaluación preoperatoria completa.</p>
+            </article>
+            <article class="specialty-card">
+                <i class="fa-solid fa-tooth"></i>
+                <h2>Odontología</h2>
+                <p>Limpiezas profesionales, extracciones complejas y planes de salud oral.</p>
+            </article>
+            <article class="specialty-card">
+                <i class="fa-solid fa-soap"></i>
+                <h2>Peluquería y dermocuidado</h2>
+                <p>Baño terapéutico, corte de raza y cuidado de piel sensible con productos especializados.</p>
+            </article>
+            <article class="specialty-card">
+                <i class="fa-solid fa-paw"></i>
+                <h2>Etología y conducta</h2>
+                <p>Evaluación de comportamiento, manejo de ansiedad y adiestramiento funcional.</p>
+            </article>
+            <article class="specialty-card">
+                <i class="fa-solid fa-bowl-food"></i>
+                <h2>Nutrición clínica</h2>
+                <p>Plan alimentario personalizado para control de peso y patologías metabólicas.</p>
+            </article>
+        </section>
+
+        <section class="container section-heading" aria-label="Introducción de profesionales">
+            <h2>Conoce a nuestros profesionales</h2>
+            <p>Perfiles con trayectoria, enfoque y disponibilidad de atención dentro de la clínica.</p>
+        </section>
+
+        <section class="vets-grid container" aria-label="Profesionales disponibles">
+            <article class="vet-card">
+                <div class="vet-photo-wrap">
+                    <img class="vet-photo" src="https://www.unsm.edu.pe/wp-content/uploads/2016/10/medico-veterinario-unsm-300x287.jpg" alt="Dra. Camila Rivas" loading="lazy">
+                </div>
+                <div class="vet-head">
+                    <span class="vet-badge">Cirugía</span>
+                    <h3>Dra. Camila Rivas</h3>
+                </div>
+                <p class="vet-role">Cirujana de tejidos blandos y traumatología</p>
+                <ul class="vet-info">
+                    <li><i class="fa-regular fa-clock"></i> Lun a Vie, 8:00 a 15:00</li>
+                    <li><i class="fa-solid fa-star"></i> 4.9 de satisfacción</li>
+                    <li><i class="fa-solid fa-briefcase-medical"></i> 11 años de experiencia</li>
+                </ul>
+                <p class="vet-note">Enfoque: cirugía reconstructiva y control postoperatorio.</p>
+            </article>
+
+            <article class="vet-card">
+                <div class="vet-photo-wrap">
+                    <img class="vet-photo" src="https://seleccionveterinaria.com/images/seleccion-veterinaria-perfiles-empleo-veterinario/empleo-auxiliar-tecnico-veterinario-perfiles.jpg" alt="Dr. Martin Peredo" loading="lazy">
+                </div>
+                <div class="vet-head">
+                    <span class="vet-badge">Odontología</span>
+                    <h3>Dr. Martin Peredo</h3>
+                </div>
+                <p class="vet-role">Especialista en salud oral y cirugía maxilofacial</p>
+                <ul class="vet-info">
+                    <li><i class="fa-regular fa-clock"></i> Mar a Sab, 9:00 a 17:00</li>
+                    <li><i class="fa-solid fa-star"></i> 4.8 de satisfacción</li>
+                    <li><i class="fa-solid fa-briefcase-medical"></i> 9 años de experiencia</li>
+                </ul>
+                <p class="vet-note">Enfoque: periodoncia veterinaria y salud oral preventiva.</p>
+            </article>
+
+            <article class="vet-card">
+                <div class="vet-photo-wrap">
+                    <img class="vet-photo" src="https://www.polisura.edu.co/wp-content/uploads/2024/02/Auxiliar-Veterinaria-2.jpg" alt="Lic. Andrea Solis" loading="lazy">
+                </div>
+                <div class="vet-head">
+                    <span class="vet-badge">Peluquería</span>
+                    <h3>Lic. Andrea Solis</h3>
+                </div>
+                <p class="vet-role">Groomer profesional y tecnóloga en piel y pelaje</p>
+                <ul class="vet-info">
+                    <li><i class="fa-regular fa-clock"></i> Lun a Sab, 10:00 a 19:00</li>
+                    <li><i class="fa-solid fa-star"></i> 5.0 de satisfacción</li>
+                    <li><i class="fa-solid fa-briefcase-medical"></i> 7 años de experiencia</li>
+                </ul>
+                <p class="vet-note">Enfoque: razas de doble capa y cuidado dermocosmético.</p>
+            </article>
+
+            <article class="vet-card">
+                <div class="vet-photo-wrap">
+                    <img class="vet-photo" src="https://doihojqqs770p.cloudfront.net/articulos/articulos-9588.jpeg" alt="Dr. Nicolas Araya" loading="lazy">
+                </div>
+                <div class="vet-head">
+                    <span class="vet-badge">Medicina general</span>
+                    <h3>Dr. Nicolas Araya</h3>
+                </div>
+                <p class="vet-role">Médico veterinario en medicina interna de pequeños animales</p>
+                <ul class="vet-info">
+                    <li><i class="fa-regular fa-clock"></i> Lun a Vie, 12:00 a 20:00</li>
+                    <li><i class="fa-solid fa-star"></i> 4.7 de satisfacción</li>
+                    <li><i class="fa-solid fa-briefcase-medical"></i> 10 años de experiencia</li>
+                </ul>
+                <p class="vet-note">Enfoque: medicina preventiva y seguimiento crónico.</p>
+            </article>
+
+            <article class="vet-card">
+                <div class="vet-photo-wrap">
+                    <img class="vet-photo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7jYYwRdtjr-C8BVsGwWXw6qL4jLg79M6HLg&s" alt="Mg. Sofia Beltran" loading="lazy">
+                </div>
+                <div class="vet-head">
+                    <span class="vet-badge">Conducta</span>
+                    <h3>Mg. Sofia Beltran</h3>
+                </div>
+                <p class="vet-role">Etóloga clínica y especialista en modificación de conducta</p>
+                <ul class="vet-info">
+                    <li><i class="fa-regular fa-clock"></i> Mié a Dom, 8:30 a 16:30</li>
+                    <li><i class="fa-solid fa-star"></i> 4.9 de satisfacción</li>
+                    <li><i class="fa-solid fa-briefcase-medical"></i> 8 años de experiencia</li>
+                </ul>
+                <p class="vet-note">Enfoque: adaptación de cachorros y manejo de ansiedad.</p>
+            </article>
+
+            <article class="vet-card">
+                <div class="vet-photo-wrap">
+                    <img class="vet-photo" src="https://blog.veterinarios.com.uy/wp-content/uploads/2020/10/Veterinaria-simpatica-en-oficina-1024x796.jpg" alt="Dra. Valeria Ochoa" loading="lazy">
+                </div>
+                <div class="vet-head">
+                    <span class="vet-badge">Nutrición</span>
+                    <h3>Dra. Valeria Ochoa</h3>
+                </div>
+                <p class="vet-role">Nutricionista clínica para pacientes crónicos y geriatría</p>
+                <ul class="vet-info">
+                    <li><i class="fa-regular fa-clock"></i> Lun, Mié y Vie, 9:30 a 14:30</li>
+                    <li><i class="fa-solid fa-star"></i> 4.8 de satisfacción</li>
+                    <li><i class="fa-solid fa-briefcase-medical"></i> 12 años de experiencia</li>
+                </ul>
+                <p class="vet-note">Enfoque: nutrición terapéutica y control de peso.</p>
+            </article>
+        </section>
+    </main>
+
+    {% include 'partials/footer.html' %}
+</body>
+</html>
